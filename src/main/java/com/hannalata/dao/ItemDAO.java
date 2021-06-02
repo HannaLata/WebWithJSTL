@@ -1,6 +1,9 @@
 package com.hannalata.dao;
 
+import com.hannalata.dao.model.ItemDTO;
 import com.hannalata.model.Item;
+import com.hannalata.model.User;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -55,8 +58,8 @@ public class ItemDAO {
             while(resultSet.next()) {
                 Item item = new Item (
                         resultSet.getInt("id"),
-                        resultSet.getString("name"),
                         resultSet.getString("code"),
+                        resultSet.getString("name"),
                         resultSet.getInt("price"),
                         resultSet.getInt("availability")
                 );
@@ -136,6 +139,29 @@ public class ItemDAO {
         }
         return null;
     }
+    
+    public static List<ItemDTO> getAllByUserAndPeriod(User user, Long timeFrom, Long timeTo) {
+		String sql = "SELECT i.id as itemid, i.name as item_name, i.price as item_price FROM items i "
+				+ "JOIN orders o ON o.item_id = i.id " + "JOIN carts c ON c.id = o.cart_id " + "WHERE c.user_id = ? "
+				+ "AND c.creation_time >=?  AND c.creation_time <=? " + "AND c.status = 2";
+		List<ItemDTO> itemDTOS = new ArrayList<>();
+		try (Connection connection = ConnectionToDB.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql);) {
+			preparedStatement.setInt(1, user.getId());
+			preparedStatement.setLong(2, timeFrom);
+			preparedStatement.setLong(3, timeTo);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				ItemDTO itemDTO = new ItemDTO(resultSet.getInt("itemid"), resultSet.getString("item_name"),
+						resultSet.getInt("item_price"));
+				itemDTOS.add(itemDTO);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return itemDTOS;
+	}
 
     public static Item update(Item item) {
         String sql =

@@ -18,7 +18,7 @@
     </form>
 <br>
     <h3>
-        <a href="/WebWithJSTL_war/jsp/registration.jsp">REGISTER NEW USER</a>
+        <a href="/WebWithJSTL/jsp/registration.jsp">REGISTER NEW USER</a>
     </h3>
 </body>
 </html>

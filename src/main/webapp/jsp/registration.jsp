@@ -5,7 +5,7 @@
 <title>>Registration page</title>
 </head>
 <body>
-	<h3>Hello, input all date. please!</h3>
+	<h3>Hello, input all date, please!</h3>
 
 	<form action="user" method="post">
     <input type="text" name="action" value="register" hidden>

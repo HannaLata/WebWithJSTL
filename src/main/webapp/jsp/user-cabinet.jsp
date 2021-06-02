@@ -7,6 +7,17 @@
     <title>User cabinet</title>
 </head>
 <body>
-<h2>Hello, user!</h2>
+<h3>This is your account!</h3>
+
+	<form action="user" method="post">
+    <input type="text" name="action" value="user-cabinet" hidden>
+    <input type="submit" value="my cart">
+    
+</form>
+
+<br>
+<h3>
+    <a href="/WebWithJSTL_war/index.jsp">GO BACK!</a>
+</h3>
 </body>
 </html>

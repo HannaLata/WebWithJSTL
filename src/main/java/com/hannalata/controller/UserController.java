@@ -73,6 +73,9 @@ public class UserController extends HttpServlet{
         	}
         	dispatcher.forward(req, resp);
         	
+        } else if(action.equals("user-cabinet")) {
+        	RequestDispatcher dispatcher = req.getRequestDispatcher("jsp/user-cabinet.jsp");
+        	dispatcher.forward(req, resp);
         }
     }
 
