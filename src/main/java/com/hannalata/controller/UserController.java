@@ -1,6 +1,7 @@
 package com.hannalata.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -9,10 +10,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hannalata.dao.ItemDAO;
 import com.hannalata.dao.UserDAO;
 import com.hannalata.model.User;
+import com.hannalata.model.Item;
 import com.hannalata.service.UserService;
 
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = "/user")
 public class UserController extends HttpServlet{
 
@@ -37,15 +41,19 @@ public class UserController extends HttpServlet{
             String password = req.getParameter("password");
 
             User user = UserService.getByLoginAndPassword(login, password);
+            RequestDispatcher dispatcher;
             if (user!=null){
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/items.jsp");
-                req.getSession().setAttribute("user-name", user.getFirstName() + " " + user.getLastName());
-                dispatcher.forward(req, resp);
+            	List<Item> items = ItemDAO.getAll();
+            	dispatcher = req.getRequestDispatcher("/jsp/items.jsp");
+                req.setAttribute("user", user);
+                req.setAttribute("itemCollection", items);
             }
             else{
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/wrong-auth.jsp");
-                dispatcher.forward(req, resp);
+                dispatcher = req.getRequestDispatcher("/jsp/wrong-auth.jsp");
+                req.setAttribute("errorMsg", "Login or password are wrong!");
+                
             }
+            dispatcher.forward(req, resp);
         } else if(action.equals("register")) {
         	String login = req.getParameter("login");
         	String password = req.getParameter("password");

@@ -6,7 +6,6 @@
 	<title>Store</title>
 </head>
 <body>
-<c:set var="user" value="${user}" scope="session" />
-<h3>Hello, <c:out value="${user.firstName}" /> <c:out value="${user.login}" /></h3>
+<h3>Hello, <c:out value="${user.firstName} ${user.lastName}" /> </h3>
 </body>
 </html>
